@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 SCRIPT_DIR=${BASH_SOURCE%/*}
 
-source ./guard.sh
+source $SCRIPT_DIR/common/guard.sh
 
 GCLOUD_PROJECT_ID="fe-mmcnichol"
 GCLOUD_ZONE="us-central1-c"
@@ -61,7 +61,7 @@ case $1 in
 
     *)
         echo ""
-        echo "Usage: setup [options...]"
+        echo "Usage: pbsetup [options...]"
         echo ""
         echo -e "\tcreate - Environment for the Build Service.  Types currently include [gke-cluster]"
         echo ""
