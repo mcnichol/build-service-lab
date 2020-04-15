@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+SCRIPT_DIR=${BASH_SOURCE%/*}
+
+source ./guard.sh
+
+GCLOUD_PROJECT_ID="fe-mmcnichol"
+GCLOUD_ZONE="us-central1-c"
+
+CLUSTER_NAME="mcnichol-cluster"
+CLUSTER_CONTEXT="{retrieved after cluster creation}"
+
+REGISTRY_URL=""
+
+check_dependencies
+
+case $1 in
+    create)
+        case $2 in
+            gke-cluster)
+                # Authenticate with gcloud unless already logged in
+                gcloud_login_check
+
+                gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
+
+                #Get gcloud credentials
+                gcloud container clusters get-credentials "$CLUSTER_NAME" --zone="$GCLOUD_ZONE" --project="$GCLOUD_PROJECT_ID"
+
+                #Set Context to Cluster
+                CLUSTER_CONTEXT="$(kubectl config current-context)"
+
+                #Download
+                # - PB CLI [Win/Mac/Linux]
+                # - Duffle CLI [Win/Mac/Linux]
+                # - Build Service Bundle
+
+                #Create credentials.yaml
+
+                #Login to Docker Registry
+
+                #Push Build Service Bundle to Registry with Duffle
+                #duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p IMAGE-REGISTRY
+                #./duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p mcnichol
+            ;;
+
+            *)
+                echo "Specify cluster type for environment. Current options are: [gke-cluster]"
+            ;;
+        esac
+    ;;
+
+    delete)
+        case $2 in
+            gke-cluster)
+                gcloud container clusters delete --zone="$GCLOUD_ZONE" "$CLUSTER_NAME" --quiet
+            ;;
+        *)
+            echo "Specify cluster type [gke-cluster]"
+            ;;
+        esac
+    ;;
+
+    *)
+        echo ""
+        echo "Usage: setup [options...]"
+        echo ""
+        echo -e "\tcreate - Environment for the Build Service.  Types currently include [gke-cluster]"
+        echo ""
+        echo -e "\tdestroy - Remove the Build Service environment. Types currently include [gke-cluster]"
+    ;;
+esac
