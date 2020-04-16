@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 SCRIPT_DIR=${BASH_SOURCE%/*}
 
-source $SCRIPT_DIR/common/guard.sh
+source $SCRIPT_DIR/common/common.sh
 
 GCLOUD_PROJECT_ID="fe-mmcnichol"
 GCLOUD_ZONE="us-central1-c"
@@ -9,7 +9,8 @@ GCLOUD_ZONE="us-central1-c"
 CLUSTER_NAME="mcnichol-cluster"
 CLUSTER_CONTEXT="{retrieved after cluster creation}"
 
-REGISTRY_URL=""
+IMAGE_REGISTRY_URL=""
+IMAGE_REGISTRY="mcnichol"
 
 check_dependencies
 
@@ -17,33 +18,24 @@ case $1 in
     create)
         case $2 in
             gke-cluster)
-                # Authenticate with gcloud unless already logged in
                 gcloud_login_check
 
-                # Create Cluster in Zone
                 gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
 
-                # Get gcloud credentials
                 gcloud container clusters get-credentials "$CLUSTER_NAME" --zone="$GCLOUD_ZONE" --project="$GCLOUD_PROJECT_ID"
 
-                # Set Context to Cluster
                 CLUSTER_CONTEXT="$(kubectl config current-context)"
                 echo ""
                 echo "Using K8S Context: $CLUSTER_CONTEXT"
                 echo ""
 
-                # Download
-                # - PB CLI [Win/Mac/Linux]
-                # - Duffle CLI [Win/Mac/Linux]
-                # - Build Service Bundle
+                image_registry_get_cert
 
-                # Create credentials.yaml
+                duffle_create_credentials
 
-                # Login to Docker Registry
+                image_registry_login
 
-                # Push Build Service Bundle to Registry with Duffle
-                # duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p IMAGE-REGISTRY
-                # ./duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p mcnichol
+                #duffle relocate -f $SCRIPT_DIR/tmp/build-service-0.1.0.tgz -m $SCRIPT_DIR/tmp/relocated.json -p $IMAGE_REGISTRY
             ;;
 
             *)
