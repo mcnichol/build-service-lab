@@ -6,15 +6,35 @@ function gcloud_login_check(){
     if [ -z $GCLOUD_CURRENT_AUTHENTICATED ]; then
         gcloud auth login
     else
+        echo ""
         echo "Currently logged in with: $GCLOUD_CURRENT_AUTHENTICATED"
+        echo ""
         echo "To logout execute:"
         echo -e "\tgcloud auth revoke $GCLOUD_CURRENT_AUTHENTICATED"
         echo ""
     fi
 }
 
+function check_variables {
+    echo ""
+    echo "Checking for required variables"
+    echo ""
+
+    if [ -z "$REGISTRY_URL" ];then
+        echo "REGISTRY_URL required for uploading dependency images"
+        echo "Consider adding \`export REGISTRY_URL=\"index.docker.io\"\` to .envrc"
+        echo ""
+        read -p "Please enter a Registry URL [index.docker.io]: " REGISTRY_URL
+        if [ "$REGISTRY_URL" == "" ]; then
+            REGISTRY_URL="index.docker.io"
+        fi
+    fi
+}
+
 function check_dependencies {
+    echo ""
     echo "Checking Dependencies"
+    echo ""
 
     CHECK_INSTALLED="$(command -v direnv)"
     if [ "$?" == "1" ]; then
