@@ -1,54 +1,54 @@
 #!/usr/bin/env bash
 
 function gcloud_login_check(){
-  GCLOUD_CURRENT_AUTHENTICATED="$(gcloud auth list --filter=status:ACTIVE --format='value(account)')"
+    GCLOUD_CURRENT_AUTHENTICATED="$(gcloud auth list --filter=status:ACTIVE --format='value(account)')"
 
-  if [ -z $GCLOUD_CURRENT_AUTHENTICATED ]; then
-    gcloud auth login
-  else
-    echo "Currently logged in with: $GCLOUD_CURRENT_AUTHENTICATED"
-    echo "To logout execute:"
-    echo -e "\tgcloud auth revoke $GCLOUD_CURRENT_AUTHENTICATED"
-    echo ""
-  fi
+    if [ -z $GCLOUD_CURRENT_AUTHENTICATED ]; then
+        gcloud auth login
+    else
+        echo "Currently logged in with: $GCLOUD_CURRENT_AUTHENTICATED"
+        echo "To logout execute:"
+        echo -e "\tgcloud auth revoke $GCLOUD_CURRENT_AUTHENTICATED"
+        echo ""
+    fi
 }
 
 function check_dependencies {
-     echo "Checking Dependencies"
+    echo "Checking Dependencies"
 
-     CHECK_INSTALLED="$(command -v direnv)"
-     if [ "$?" == "1" ]; then
-         echo "Direnv is not installed."
-         echo ""
-         echo "Direnv is recommended to keep your environment secrets scoped to only this folder."
-         read -p "Would you like to setup Direnv? [y/N]: " SETUP_DIRENV
+    CHECK_INSTALLED="$(command -v direnv)"
+    if [ "$?" == "1" ]; then
+        echo "Direnv is not installed."
+        echo ""
+        echo "Direnv is recommended to keep your environment secrets scoped to only this folder."
+        read -p "Would you like to setup Direnv? [y/N]: " SETUP_DIRENV
 
-         if [ "${SETUP_DIRENV:0:1}" == "y" ]; then
-           brew install direnv
+        if [ "${SETUP_DIRENV:0:1}" == "y" ]; then
+            brew install direnv
 
-           echo "PATH_add bin" > "$SCRIPT_DIR/.envrc"
-           echo 'echo ".envrc file was setup in $(pwd)/.envrc"' >> "$SCRIPT_DIR/.envrc"
-           echo 'echo "Add environment variables to me!"' >> "$SCRIPT_DIR/.envrc"
+            echo "PATH_add bin" > "$SCRIPT_DIR/.envrc"
+            echo 'echo ".envrc file was setup in $(pwd)/.envrc"' >> "$SCRIPT_DIR/.envrc"
+            echo 'echo "Add environment variables to me!"' >> "$SCRIPT_DIR/.envrc"
 
-           if [ "$SHELL" == "/bin/zsh" ]; then
-               echo "To finish direnv setup execute:"
-               echo "  echo 'eval \"\$(direnv hook zsh)\"' >> ~/.zshrc && source ~/.zshrc"
-               echo ""
-           elif [ "$SHELL"== "/bin/bash" ]; then
-               echo ""
-               echo "To finish direnv setup execute:"
-               echo "  echo 'eval \"\$(direnv hook bash)\"' >> ~/.bashrc && source ~/.bashrc"
-           else
-               echo "Check docs for setting up hooks in your shell: https://direnv.net/"
-           fi
+            if [ "$SHELL" == "/bin/zsh" ]; then
+                echo "To finish direnv setup execute:"
+                echo "  echo 'eval \"\$(direnv hook zsh)\"' >> ~/.zshrc && source ~/.zshrc"
+                echo ""
+            elif [ "$SHELL"== "/bin/bash" ]; then
+                echo ""
+                echo "To finish direnv setup execute:"
+                echo "  echo 'eval \"\$(direnv hook bash)\"' >> ~/.bashrc && source ~/.bashrc"
+            else
+                echo "Check docs for setting up hooks in your shell: https://direnv.net/"
+            fi
 
-           echo "Once your hook is set, allow your .envrc properties"
-           echo ""
-           echo "Execute command:"
-           echo "  direnv allow"
-           exit
-          fi
- fi
+            echo "Once your hook is set, allow your .envrc properties"
+            echo ""
+            echo "Execute command:"
+            echo "  direnv allow"
+            exit
+        fi
+    fi
 
 
      # kubectl `brew install kubectl`
