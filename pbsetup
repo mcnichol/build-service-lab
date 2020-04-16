@@ -9,8 +9,8 @@ GCLOUD_ZONE="us-central1-c"
 CLUSTER_NAME="mcnichol-cluster"
 CLUSTER_CONTEXT="{retrieved after cluster creation}"
 
-IMAGE_REGISTRY_URL=""
-IMAGE_REGISTRY="mcnichol"
+REGISTRY_URL=""
+REGISTRY_PATH="mcnichol"
 
 check_dependencies
 
@@ -31,11 +31,11 @@ case $1 in
 
                 image_registry_get_cert
 
-                duffle_create_credentials
-
                 image_registry_login
 
-                #duffle relocate -f $SCRIPT_DIR/tmp/build-service-0.1.0.tgz -m $SCRIPT_DIR/tmp/relocated.json -p $IMAGE_REGISTRY
+                duffle_create_credentials
+
+                duffle relocate -f $SCRIPT_DIR/tmp/build-service-0.1.0.tgz -m $SCRIPT_DIR/tmp/relocated.json -p $REGISTRY_PATH
             ;;
 
             *)
