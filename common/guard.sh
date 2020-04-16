@@ -62,11 +62,17 @@ function check_dependencies {
      #  KIND == kind `brew install kind` (Is this even possible due to networking pains?)
 
      # duffle
-     echo "Downloading duffle-cli for Mac"
-     curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648381/download -o $SCRIPT_DIR/bin/duffle --progress
+     CHECK_INSTALLED="$(command -v duffle)"
+     if [ "$?" == "1" ]; then
+       echo "Downloading duffle-cli for Mac"
+       curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648381/download -o $SCRIPT_DIR/bin/duffle --progress
+     fi
 
-     echo "Downloading pb-cli for Mac"
-     curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648384/download -o $SCRIPT_DIR/bin/pb --progress
+     CHECK_INSTALLED="$(command -v pb)"
+     if [ "$?" == "1" ]; then
+       echo "Downloading pb-cli for Mac"
+       curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648384/download -o $SCRIPT_DIR/bin/pb --progress
+     fi
 
 
      # docker registry (BYO or existing gcr.io / index.docker.io)
