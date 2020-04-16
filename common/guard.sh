@@ -74,6 +74,12 @@ function check_dependencies {
        curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648384/download -o $SCRIPT_DIR/bin/pb --progress
      fi
 
+     CHECK_INSTALLED="$(ls $SCRIPT_DIR/tmp/build-service-0.1.0.tgz > /dev/null 2>&1)"
+     if [ "$?" == "1" ]; then
+       echo "Downloading build-service-0.1.0"
+       curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648378/download -o "$SCRIPT_DIR/tmp/build-service-0.1.0.tgz" --progress
+
+     fi
 
      # docker registry (BYO or existing gcr.io / index.docker.io)
      # * Worth setting up Harbor
