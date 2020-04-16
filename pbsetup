@@ -20,26 +20,30 @@ case $1 in
                 # Authenticate with gcloud unless already logged in
                 gcloud_login_check
 
+                # Create Cluster in Zone
                 gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
 
-                #Get gcloud credentials
+                # Get gcloud credentials
                 gcloud container clusters get-credentials "$CLUSTER_NAME" --zone="$GCLOUD_ZONE" --project="$GCLOUD_PROJECT_ID"
 
-                #Set Context to Cluster
+                # Set Context to Cluster
                 CLUSTER_CONTEXT="$(kubectl config current-context)"
+                echo ""
+                echo "Using K8S Context: $CLUSTER_CONTEXT"
+                echo ""
 
-                #Download
+                # Download
                 # - PB CLI [Win/Mac/Linux]
                 # - Duffle CLI [Win/Mac/Linux]
                 # - Build Service Bundle
 
-                #Create credentials.yaml
+                # Create credentials.yaml
 
-                #Login to Docker Registry
+                # Login to Docker Registry
 
-                #Push Build Service Bundle to Registry with Duffle
-                #duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p IMAGE-REGISTRY
-                #./duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p mcnichol
+                # Push Build Service Bundle to Registry with Duffle
+                # duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p IMAGE-REGISTRY
+                # ./duffle relocate -f /tmp/build-service-${version}.tgz -m /tmp/relocated.json -p mcnichol
             ;;
 
             *)
@@ -65,6 +69,6 @@ case $1 in
         echo ""
         echo -e "\tcreate - Environment for the Build Service.  Types currently include [gke-cluster]"
         echo ""
-        echo -e "\tdestroy - Remove the Build Service environment. Types currently include [gke-cluster]"
+        echo -e "\tdelete - Remove the Build Service environment. Types currently include [gke-cluster]"
     ;;
 esac
