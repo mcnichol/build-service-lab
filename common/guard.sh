@@ -62,7 +62,10 @@ function check_dependencies {
      #  KIND == kind `brew install kind` (Is this even possible due to networking pains?)
 
      # duffle
-     echo "Downloading PB CLI for Mac"
+     echo "Downloading duffle-cli for Mac"
+     curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648381/download -o $SCRIPT_DIR/bin/duffle --progress
+
+     echo "Downloading pb-cli for Mac"
      curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648384/download -o $SCRIPT_DIR/bin/pb --progress
 
 
