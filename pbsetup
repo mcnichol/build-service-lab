@@ -9,7 +9,7 @@ GCLOUD_ZONE="us-central1-c"
 CLUSTER_NAME="mcnichol-cluster"
 CLUSTER_CONTEXT="{retrieved after cluster creation}"
 
-REGISTRY_URL=""
+REGISTRY_URL="index.docker.io"
 REGISTRY_PATH="mcnichol"
 
 check_dependencies
