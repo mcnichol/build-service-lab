@@ -21,12 +21,42 @@ function check_variables {
     echo ""
 
     if [ -z "$REGISTRY_URL" ];then
+        echo ""
         echo "REGISTRY_URL required for uploading dependency images"
         echo "Consider adding \`export REGISTRY_URL=\"index.docker.io\"\` to .envrc"
         echo ""
         read -p "Please enter a Registry URL [index.docker.io]: " REGISTRY_URL
         if [ "$REGISTRY_URL" == "" ]; then
+            echo "Setting Registry URL to: index.docker.io"
+            echo ""
             REGISTRY_URL="index.docker.io"
+        fi
+    fi
+
+    if [ -z "$REGISTRY_USERNAME" ];then
+        echo ""
+        echo "REGISTRY_USERNAME required for Authenticating to registry"
+        echo "Consider adding \`export REGISTRY_USERNAME=\"username\"\` to .envrc"
+        echo ""
+        read -p "Please enter the username for $REGISTRY_URL: " REGISTRY_USERNAME
+        echo ""
+        if [ "$REGISTRY_USERNAME" == "" ]; then
+        echo ""
+            echo "Cannot proceed without REGISTRY_USERNAME.  Bailing..."
+            exit
+        fi
+    fi
+
+    if [ -z "$REGISTRY_PASSWORD" ];then
+        echo ""
+        echo "REGISTRY_PASSWORD required for Authenticating to registry"
+        echo "Consider adding \`export REGISTRY_PASSWORD=\"password\"\` to .envrc"
+        echo ""
+        read -p "Please enter the password for $REGISTRY_URL: " REGISTRY_PASSWORD
+        if [ "$REGISTRY_PASSWORD" == "" ]; then
+        echo ""
+            echo "Cannot proceed without REGISTRY_PASSWORD.  Bailing..."
+            exit
         fi
     fi
 }
@@ -38,10 +68,12 @@ function check_dependencies {
 
     CHECK_INSTALLED="$(command -v direnv)"
     if [ "$?" == "1" ]; then
+        echo ""
         echo "Direnv is not installed."
         echo ""
         echo "Direnv is recommended to keep your environment secrets scoped to only this folder."
         read -p "Would you like to setup Direnv? [y/N]: " SETUP_DIRENV
+        echo ""
 
         if [ "${SETUP_DIRENV:0:1}" == "y" ]; then
             brew install direnv
