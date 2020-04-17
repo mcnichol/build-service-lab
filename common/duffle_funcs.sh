@@ -20,3 +20,9 @@ EOF
 
 }
 
+
+function duffle_relocate_build_dependencies(){
+    echo "Importing Build Dependencies to $REGISTRY_URL"
+
+    duffle relocate -f $SCRIPT_DIR/tmp/build-service-0.1.0.tgz -m $SCRIPT_DIR/tmp/relocated.json -p              $REGISTRY_PATH
+}

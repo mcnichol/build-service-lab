@@ -47,6 +47,18 @@ function check_variables {
         fi
     fi
 
+    if [ -z "$REGISTRY_PATH" ];then
+        echo ""
+        echo "REGISTRY_PATH required for uploading dependency images"
+        echo "Consider adding \`export REGISTRY_PATH=\"path\"\` to .envrc"
+        echo ""
+        read -p "Please enter a Registry path: " REGISTRY_PATH
+        if [ "$REGISTRY_PATH" == "" ]; then
+            echo "Cannot proceed without REGISTRY_PATH.  Bailing..."
+            exit
+        fi
+    fi
+
     if [ -z "$REGISTRY_PASSWORD" ];then
         echo ""
         echo "REGISTRY_PASSWORD required for Authenticating to registry"

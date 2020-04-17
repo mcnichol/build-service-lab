@@ -9,9 +9,6 @@ GCLOUD_ZONE="us-central1-c"
 CLUSTER_NAME="mcnichol-cluster"
 CLUSTER_CONTEXT="{retrieved after cluster creation}"
 
-#REGISTRY_URL="index.docker.io"
-REGISTRY_PATH="mcnichol"
-
 check_variables
 check_dependencies
 
@@ -23,7 +20,6 @@ case $1 in
                 gcloud_guard
 
                 gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
-
                 gcloud container clusters get-credentials "$CLUSTER_NAME" --zone="$GCLOUD_ZONE" --project="$GCLOUD_PROJECT_ID"
 
                 CLUSTER_CONTEXT="$(kubectl config current-context)"
@@ -32,12 +28,10 @@ case $1 in
                 echo ""
 
                 image_registry_get_cert
-
                 image_registry_login
 
                 duffle_create_credentials
-
-                duffle relocate -f $SCRIPT_DIR/tmp/build-service-0.1.0.tgz -m $SCRIPT_DIR/tmp/relocated.json -p $REGISTRY_PATH
+                duffle_relocate_build_dependencies
             ;;
 
             *)
@@ -61,8 +55,8 @@ case $1 in
         echo ""
         echo "Usage: pbsetup [options...]"
         echo ""
-        echo -e "\tcreate - Environment for the Build Service.  Types currently include [gke-cluster]"
+        echo -e "\tcreate - Create cluster and deploy Build Service.  Cluster types currently include [gke-cluster]"
         echo ""
-        echo -e "\tdelete - Remove the Build Service environment. Types currently include [gke-cluster]"
+        echo -e "\tdelete - Delete cluster and Build Service. Types currently include [gke-cluster]"
     ;;
 esac
