@@ -1,20 +1,5 @@
 #!/usr/bin/env bash
 
-function gcloud_login_check(){
-    GCLOUD_CURRENT_AUTHENTICATED="$(gcloud auth list --filter=status:ACTIVE --format='value(account)')"
-
-    if [ -z $GCLOUD_CURRENT_AUTHENTICATED ]; then
-        gcloud auth login
-    else
-        echo ""
-        echo "Currently logged in with: $GCLOUD_CURRENT_AUTHENTICATED"
-        echo ""
-        echo "To logout execute:"
-        echo -e "\tgcloud auth revoke $GCLOUD_CURRENT_AUTHENTICATED"
-        echo ""
-    fi
-}
-
 function check_variables {
     echo ""
     echo "Checking for required variables"

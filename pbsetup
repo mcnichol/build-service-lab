@@ -19,7 +19,8 @@ case $1 in
     create)
         case $2 in
             gke-cluster)
-                gcloud_login_check
+                source $SCRIPT_DIR/common/gcloud_funcs.sh
+                gcloud_guard
 
                 gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
 
