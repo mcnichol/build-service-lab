@@ -5,6 +5,21 @@ function check_variables {
     echo "Checking for required variables"
     echo ""
 
+    if [ -z "$PIVOTAL_AUTH_TOKEN" ];then
+        echo ""
+        echo "PIVOTAL_AUTH_TOKEN required for downloading pb, duffle, and build-dependences from Pivnet"
+        echo "Consider adding \`export PIVOTAL_AUTH_TOKEN=\"YOUR_TOKEN\"\` to .envrc"
+        echo ""
+        read -p "Please enter your Pivotal Auth Token: " PIVOTAL_AUTH_TOKEN
+        if [ "$PIVOTAL_AUTH_TOKEN" == "" ]; then
+            echo "Cannot proceed without PIVOTAL_AUTH_TOKEN.  Bailing..."
+            echo ""
+            echo "You can find your Auth Token at https://network.pivotal.io under Username > Edit Profile > Legacy API Token"
+            exit
+        fi
+    fi
+
+
     if [ -z "$REGISTRY_URL" ];then
         echo ""
         echo "REGISTRY_URL required for uploading dependency images"
