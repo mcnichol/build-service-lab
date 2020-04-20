@@ -2,8 +2,7 @@
 
 function check_variables {
     echo ""
-    echo "Checking for required variables"
-    echo ""
+    echo -n "Checking for required variables..."
 
     if [ -z "$PIVOTAL_AUTH_TOKEN" ];then
         echo ""
@@ -71,12 +70,14 @@ function check_variables {
             exit
         fi
     fi
+
+    echo "complete"
+    echo ""
 }
 
 function check_dependencies {
     echo ""
-    echo "Checking Dependencies"
-    echo ""
+    echo -n "Checking Dependencies..."
 
     CHECK_INSTALLED="$(command -v direnv)"
     if [ "$?" == "1" ]; then
@@ -146,6 +147,8 @@ function check_dependencies {
        curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648378/download -o "$SCRIPT_DIR/tmp/build-service-0.1.0.tgz" --progress
      fi
 
+     echo "complete"
+     echo ""
      # * Worth setting up Harbor
      # * Batteries included Docker Hub is convenient
 

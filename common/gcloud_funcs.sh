@@ -42,6 +42,6 @@ function gcloud_check_cli(){
         fi
     else
         echo "installed"
-        echo ""1
+        echo ""
     fi
 }
