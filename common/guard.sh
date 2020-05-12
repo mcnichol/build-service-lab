@@ -92,6 +92,29 @@ function check_dependencies {
     echo ""
     echo -n "Checking Dependencies..."
 
+    if [ ! -d "$SCRIPT_DIR/bin" ]; then
+        echo ""
+        echo -n "./bin folder missing for cli binaries. creating..."
+        mkdir "$SCRIPT_DIR/bin"
+        echo "created.  This folder is .gitignore'd and not version controlled."
+
+    fi
+
+    if [ ! -d "$SCRIPT_DIR/tmp" ]; then
+        echo ""
+        echo -n "./tmp folder missing for build-service dependencies. creating..."
+        mkdir "$SCRIPT_DIR/tmp"
+        echo "created.  This folder is .gitignore'd and not version controlled."
+    fi
+
+    if [ ! -d "$SCRIPT_DIR/config" ]; then
+        echo ""
+        echo -n "./config folder missing for sensitive config credentials. creating..."
+        mkdir "$SCRIPT_DIR/config"
+        echo "created.  This folder is .gitignore'd and not version controlled."
+    fi
+
+
     CHECK_INSTALLED="$(command -v direnv)"
     if [ "$?" == "1" ]; then
         echo ""
