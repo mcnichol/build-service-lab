@@ -42,9 +42,6 @@ echo """
     -f "$SCRIPT_DIR/tmp/build-service-0.1.0.tgz"
     -m "$SCRIPT_DIR/tmp/relocated.json"
 """
-    echo "$GOOGLE_APPLICATION_CREDENTIALS"
-    echo "$KUBECONFIG"
-    echo "$KUBE_NAMESPACE"
     sleep 2s
 
     GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS" kubectl create namespace $KUBE_NAMESPACE --kubeconfig $KUBECONFIG

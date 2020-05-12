@@ -1,12 +1,29 @@
 #!/usr/bin/env bash
 
 function gcloud_check_envvar(){
+    if [ -z "$GCLOUD_PROJECT_ID" ]; then
+        echo ""
+        echo "When using GKE you must specify a Project ID"
+        echo ""
+        echo "You can get your Project ID by running:"
+        echo "   gcloud auth list --filter=status:Active --format='value(account)'"
+        echo ""
+        read -p "Please enter your Project ID (e.g. fe-USERNAME): " GCLOUD_PROJECT_ID
+
+        if [ -z "$GCLOUD_PROJECT_ID" ]; then
+            echo "Cannot proceed without a Project ID.  Bailing..."
+            echo ""
+            echo "Learn more about Google Project ID's here: https://cloud.google.com/sdk/gcloud/reference/projects"
+            exit
+        fi
+    fi
+
     if [ -z "$GCLOUD_ZONE" ]; then
         echo ""
         echo "When using GKE you must target a Zone"
         echo ""
         read -p "Please enter your the Zone for your environment (e.g. us-central1-c): " GCLOUD_ZONE
-        echo $GCLOUD_ZONE
+
         if [ -z "$GCLOUD_ZONE" ]; then
             echo "Cannot proceed without a Zone.  Bailing..."
             echo ""
@@ -63,7 +80,7 @@ function gcloud_create_service_account(){
   sleep 2s
 
   CHECK_ACCOUNT_EXISTS=$(gcloud iam service-accounts describe $GCLOUD_SERVICE_ACCOUNT@$GCLOUD_PROJECT_ID.iam.gserviceaccount.com)
-  if [ "echo $?" == "1" ]; then
+  if [ "$?" == "1" ]; then
       gcloud iam service-accounts create $GCLOUD_SERVICE_ACCOUNT
       gcloud projects add-iam-policy-binding $GCLOUD_PROJECT_ID --member "serviceAccount:$GCLOUD_SERVICE_ACCOUNT@$GCLOUD_PROJECT_ID.iam.gserviceaccount.com" --role "roles/owner"
   fi

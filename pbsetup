@@ -3,7 +3,6 @@ SCRIPT_DIR=${BASH_SOURCE%/*}
 
 source $SCRIPT_DIR/common/common.sh
 
-CLUSTER_NAME="my-tas-cluster"
 CLUSTER_CONTEXT="{retrieved after cluster creation}"
 
 check_variables
@@ -13,16 +12,15 @@ case $1 in
     create)
         case $2 in
             gke-cluster)
-                GCLOUD_PROJECT_ID="fe-mmcnichol"
-                GCLOUD_ZONE="us-central1-c"
-                GCLOUD_SERVICE_ACCOUNT=$CLUSTER_NAME
-
                 source $SCRIPT_DIR/common/gcloud_funcs.sh
                 gcloud_guard
 
-                gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
+                GCLOUD_SERVICE_ACCOUNT="${CLUSTER_NAME}-sa"
+                echo "GCloud Service Account: $GCLOUD_SERVICE_ACCOUNT"
 
+                gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
                 gcloud_create_service_account
+
                 GOOGLE_APPLICATION_CREDENTIALS="$SCRIPT_DIR/config/$GCLOUD_SERVICE_ACCOUNT.json"
 
                 gcloud_create_kubeconfig

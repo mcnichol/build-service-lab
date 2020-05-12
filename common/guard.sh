@@ -71,6 +71,19 @@ function check_variables {
         fi
     fi
 
+    if [ -z "$CLUSTER_NAME" ];then
+        echo ""
+        echo "CLUSTER_NAME required for naming clusters"
+        echo "Consider adding \`export CLUSTER_NAME=\"my-cluster-name\"\` to .envrc"
+        echo ""
+        read -p "Please enter the cluster name: " CLUSTER_NAME
+        if [ "$CLUSTER_NAME" == "" ]; then
+        echo ""
+            echo "Cannot proceed without CLUSTER_NAME.  Bailing..."
+            exit
+        fi
+    fi
+
     echo "complete"
     echo ""
 }
