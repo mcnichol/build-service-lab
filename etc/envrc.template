@@ -1,8 +1,7 @@
 PATH_add bin
 
-
 #################################################
-#     IMAGE REGISTRY SPECIFIC CONFIGURATION     #
+#             GLOBAL CONFIGURATION              #
 #################################################
 export PIVOTAL_AUTH_TOKEN="set-auth-token"
 export CLUSTER_NAME="set-cluster-name"
@@ -18,15 +17,15 @@ export REGISTRY_PASSWORD="docker-password"
 export REGISTRY_PATH="docker-path"
 
 
-#########################################
-#     DUFFLE SPECIFIC CONFIGURATION     #
-#########################################
+#################################################
+#         DUFFLE SPECIFIC CONFIGURATION         #
+#################################################
 export DUFFLE_CLAIM="set-duffle-claim"
 
 
-#########################################
-#     GCLOUD SPECIFIC CONFIGURATION     #
-#########################################
+#################################################
+#         GCLOUD SPECIFIC CONFIGURATION         #
+#################################################
 # If using GKE Clusters, uncomment and set these GCLOUD environment variables
 #export GCLOUD_PROJECT_ID="set-gcloud-project-id"
 #export GCLOUD_ZONE="us-central1-c"
