@@ -21,20 +21,38 @@ In Progress:
 
 ## Setup
 
-1. Clone this repo: `git clone https://github.com/mcnichol/build-service-lab.git && cd build-service-lab`
+1. Clone this repo:  
+```
+git clone https://github.com/mcnichol/build-service-lab.git && cd build-service-lab
+```
 1. If using [direnv](https://direnv.net/) we will setup an .envrc file in the root of this repo which will export required environment variables. If not using Direnv initialize and export the variables found in etc/envrc.template
-    1. On Mac install Direnv with: `brew install direnv`
-    1. Follow the instructions for adding the direnv hook to your shell rc file
-    1. Copy etc/envrc.template to repo root as .envrc: `cp etc/envrc.template .envrc`
-    1. Edit the environment variables in .envrc with your values. Some lines will need to be uncommented depending on Kubernetes Cluster needs
-    1. Allow variables to be exported in this folder: `direnv allow` 
-1. Create your cluster and install build service: `./pbsetup create gke-cluster`
+    * Install Direnv 
+        * Mac: `brew install direnv`
+        * Linux: `sudo apt install direnv`
+    * Add the direnv hook to your shell's rc file (e.g. `echo 'eval "$(direnv hook bash)"' >> ~/.bashrc`)
+    * Copy envrc.template to repo root as .envrc 
+    ```
+    cp etc/envrc.template .envrc
+    ```
+    * Edit the environment variables in .envrc with your values. Some lines will need to be uncommented depending on which Kubernetes Cluster you are using 
+    * Allow variables to be exported 
+    ```
+    direnv allow
+    ``` 
+1. Create your cluster and install build service
+```
+./pbsetup create gke-cluster
+```
 
 You now have a Cluster with Tanzu Build Service! To query your cluster you can use the kubeconfig that you created. 
+```
 KUBECONFIG=config/kubeconfig.yaml kubectl get all
+```
 
 *Note: If you are using GKE, the Service Account we created is required as well.*
+```
 GOOGLE_APPLICATION_CREDENTIALS=config/$CLUSTER_NAME-sa.json KUBECONFIG=config/kubeconfig.yaml kubectl get all
+```
 
 ## Use the Cluster
 Let's do something with our Build Service
