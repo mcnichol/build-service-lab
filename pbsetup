@@ -5,6 +5,7 @@ source $SCRIPT_DIR/common/common.sh
 
 CLUSTER_CONTEXT="{retrieved after cluster creation}"
 
+check_setup_dependencies
 check_variables
 check_dependencies
 
