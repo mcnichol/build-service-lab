@@ -140,7 +140,7 @@ function check_variables {
         fi
     fi
 
-   if [ -z "$DUFFLE_CLAIM" ];then
+    if [ -z "$DUFFLE_CLAIM" ];then
         echo ""
         echo "DUFFLE_CLAIM required for installing Build Service"
         echo "Consider adding \`export DUFFLE_CLAIM=\"my-duffle-claim\"\` to .envrc"
@@ -183,16 +183,6 @@ function check_dependencies {
         echo "created.  This folder is .gitignore'd and not version controlled."
     fi
 
-    # kubectl `brew install kubectl`
-
-    #If leveraging:
-    #  GKE == gcloud `brew cask install google-cloud-sdk`
-    #  PKS == pks  Get from network.pivotal.io
-    #  TKG == ?
-    #  EKS == ?
-    #  AKS == ?
-    #  KIND == kind `brew install kind` (Is this even possible due to networking pains?)
-
     # duffle
     CHECK_INSTALLED="$(command -v duffle)"
     if [ "$?" == "1" ]; then
@@ -223,17 +213,10 @@ function check_dependencies {
 
     CHECK_INSTALLED="$(ls $SCRIPT_DIR/tmp/build-service-0.1.0.tgz > /dev/null 2>&1)"
     if [ "$(( $? > 0))" == "1" ]; then
-      echo "Downloading build-service-0.1.0"
-      curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648378/download -o "$SCRIPT_DIR/tmp/build-service-0.1.0.tgz" --progress
+        echo "Downloading build-service-0.1.0"
+        curl -L -H "Authorization: Token $PIVOTAL_AUTH_TOKEN" https://network.pivotal.io/api/v2/products/build-service/releases/612454/product_files/648378/download -o "$SCRIPT_DIR/tmp/build-service-0.1.0.tgz" --progress
     fi
 
     echo "complete"
     echo ""
-    # * Worth setting up Harbor
-    # * Batteries included Docker Hub is convenient
-
-    # openssl s_client -showcerts -servername hub.docker.com -connect hub.docker.com:443 </dev/null 2>/dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > $CERTFILE
-
-    # We can check if certs cover the domain
-    # openssl crl2pkcs7 -nocrl -certfile mycertificate.cer | openssl pkcs7 -print_certs -noout
- }
+}

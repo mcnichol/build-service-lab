@@ -3,7 +3,7 @@
 function duffle_create_credentials(){
   echo "Create Credentials.yaml"
 
-cat << EOF>$SCRIPT_DIR/etc/credentials.yaml
+cat << EOF>$SCRIPT_DIR/config/credentials.yaml
 name: build-service-credentials
 credentials:
  - name: kube_config
@@ -13,7 +13,7 @@ credentials:
      path: "/root/.kube/config"
  - name: ca_cert
    source:
-     path: "$SCRIPT_DIR/etc/docker_io.crt"
+     path: "$SCRIPT_DIR/config/$REGISTRY_URL.crt"
    destination:
      path: "/cnab/app/cert/ca.crt"
 EOF
@@ -32,7 +32,7 @@ function duffle_create_tbs(){
     echo "Executing"
 echo """
     KUBE_NAMESPACE=$KUBE_NAMESPACE KUBECONFIG=$KUBECONFIG GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS
-    duffle install "$DUFFLE_CLAIM" --driver k8s -c etc/credentials.yaml
+    duffle install "$DUFFLE_CLAIM" --driver k8s -c "$SCRIPT_DIR/config/credentials.yaml"
     --set kubernetes_env="$CLUSTER_CONTEXT"
     --set docker_registry="$REGISTRY_URL"
     --set registry_username="$REGISTRY_USERNAME"
@@ -44,9 +44,9 @@ echo """
 """
     sleep 2s
 
-    GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS" kubectl create namespace $KUBE_NAMESPACE --kubeconfig $KUBECONFIG
+    GOOGLE_APPLICATION_CREDENTIALS="$GOOGLE_APPLICATION_CREDENTIALS" KUBECONFIG=$KUBECONFIG kubectl create namespace $KUBE_NAMESPACE
 
-    KUBE_NAMESPACE=$KUBE_NAMESPACE KUBECONFIG=$KUBECONFIG GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS duffle install "$DUFFLE_CLAIM" --driver k8s -c etc/credentials.yaml \
+    KUBE_NAMESPACE=$KUBE_NAMESPACE KUBECONFIG=$KUBECONFIG GOOGLE_APPLICATION_CREDENTIALS=$GOOGLE_APPLICATION_CREDENTIALS duffle install "$DUFFLE_CLAIM" --driver k8s -c $SCRIPT_DIR/config/credentials.yaml \
     --set kubernetes_env="$CLUSTER_CONTEXT" \
     --set docker_registry="$REGISTRY_URL" \
     --set registry_username="$REGISTRY_USERNAME" \
