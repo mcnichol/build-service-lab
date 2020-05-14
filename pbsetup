@@ -19,9 +19,9 @@ case $1 in
                 GCLOUD_SERVICE_ACCOUNT="${CLUSTER_NAME}-sa"
                 echo "GCloud Service Account: $GCLOUD_SERVICE_ACCOUNT"
 
-                gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME"
-                gcloud_create_service_account
+                gcloud container clusters create --zone="$GCLOUD_ZONE" "$CLUSTER_NAME" --verbosity="error"
 
+                gcloud_create_service_account
                 GOOGLE_APPLICATION_CREDENTIALS="$SCRIPT_DIR/config/$GCLOUD_SERVICE_ACCOUNT.json"
 
                 gcloud_create_kubeconfig
